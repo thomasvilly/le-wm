@@ -1,0 +1,41 @@
+[project]
+name = "le-wm"
+version = "0.1.0"
+description = "V-JEPA 2-AC frozen encoder + MLP action head for 4-DOF robot arm manipulation"
+requires-python = ">=3.10"
+dependencies = [
+    "torch==2.7.*",
+    "torchvision",
+    "timm",
+    "einops",
+    "h5py",
+    "numpy",
+    "opencv-python",
+    "matplotlib",
+]
+
+[tool.uv]
+package = false
+
+# Default to CPU torch (works on WSL local dev, macOS, anywhere).
+# To use a different accelerator, override the index at sync time:
+#   Cluster (Blackwell):   uv sync --index pytorch-cu128
+#   Windows w/ CUDA 12.4:  uv sync --index pytorch-cu124
+[tool.uv.sources]
+torch       = { index = "pytorch-cpu" }
+torchvision = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu124"
+url = "https://download.pytorch.org/whl/cu124"
+explicit = true

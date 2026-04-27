@@ -31,29 +31,27 @@ scp -i ~/.ssh/id_uwaterloo \
 ### 4. Drop in the Dobot DLLs
 Copy `DobotDll.dll`, `msvcp120.dll`, `msvcr120.dll`, `Qt5Core.dll`, `Qt5Network.dll`, etc. into the repo root next to `DobotDllType.py`. (Same set you used during teleop / data collection.)
 
-### 5. Create a Windows venv
+### 5. Install with uv
 ```bash
-python -m venv .venv
-.venv\Scripts\activate
+# Default (CPU torch):
+uv sync
+
+# If you have an NVIDIA GPU with CUDA 12.8+ driver (faster inference):
+uv sync --index pytorch-cu128
+
+# If you have an older NVIDIA GPU stuck on CUDA 12.4:
+uv sync --index pytorch-cu124
 ```
 
-### 6. Install dependencies
+### 6. Sanity check (no arm motion)
 ```bash
-# CUDA torch — pick the index that matches your GPU driver
-pip install torch --index-url https://download.pytorch.org/whl/cu124
-
-pip install timm einops opencv-python numpy h5py
-```
-
-### 7. Sanity check (no arm motion)
-```bash
-python inference_local.py --ckpt ckpt_e128_h512_d2.pt --dry_run
+uv run python inference_local.py --ckpt ckpt_e128_h512_d2.pt --dry_run
 ```
 You should see V-JEPA load, the camera open, and per-tick action logs without the arm moving.
 
-### 8. Real run
+### 7. Real run
 ```bash
-python inference_local.py --ckpt ckpt_e128_h512_d2.pt --hz 5
+uv run python inference_local.py --ckpt ckpt_e128_h512_d2.pt --hz 5
 ```
 
 Press `q` in the camera window or Ctrl+C to stop.
@@ -67,6 +65,6 @@ Press `q` in the camera window or Ctrl+C to stop.
 ## Common issues
 
 - **`DobotConnect_NotFound`** — wrong COM port; check Device Manager.
-- **`CUDA out of memory`** — V-JEPA ViT-g needs ~8 GB VRAM; lower batch isn't an option here (we already use B=1). Use a bigger GPU or run on CPU (will be ~2-5 Hz at best).
+- **`CUDA out of memory`** — V-JEPA ViT-g needs ~8 GB VRAM. On smaller GPUs, fall back to CPU (`uv sync` with no index override) and lower `--hz`.
 - **`vjepa2_src` ImportError** — make sure it's a folder, not a zip; should contain `src/hub/backbones.py` with the patched download URL.
 - **Camera opens index 0 but it's the wrong camera** — try `--cam 1`.

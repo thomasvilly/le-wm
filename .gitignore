@@ -3,3 +3,7 @@ __pycache__
 .venv
 *.h5
 tmp/
+vjepa2_src/
+*.pt
+*.dll
+*.h
