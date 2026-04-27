@@ -1,0 +1,11 @@
+{
+  "1": "pick up the blue block and put it on the red book",
+  "2": "pick up the red block and put it on the red book",
+  "3": "pick up the green block and put it on the red book",
+  "4": "pick up all the blocks and put them on the red book",
+  "5": "pick up the blue block and put it on the blue laptop",
+  "6": "pick up the red block and put it on the blue laptop",
+  "7": "pick up the green block and put it on the blue laptop",
+  "8": "pick up all the blocks and put them on the blue laptop",
+  "9": "pick up each block and put it on the book of the same colour"
+}
