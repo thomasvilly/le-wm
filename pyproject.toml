@@ -14,6 +14,10 @@ dependencies = [
     "matplotlib",
 ]
 
+[project.optional-dependencies]
+cu128 = []
+cu124 = []
+
 [tool.uv]
 package = false
 
@@ -22,9 +26,16 @@ package = false
 #   Cluster (Blackwell):   uv sync --index pytorch-cu128
 #   Windows w/ CUDA 12.4:  uv sync --index pytorch-cu124
 [tool.uv.sources]
-torch       = { index = "pytorch-cpu" }
-torchvision = { index = "pytorch-cpu" }
-
+torch = [
+    { index = "pytorch-cu128", marker = "extra == 'cu128'" },
+    { index = "pytorch-cu124", marker = "extra == 'cu124' and extra != 'cu128'" },
+    { index = "pytorch-cpu", marker = "extra != 'cu128' and extra != 'cu124'" }
+]
+torchvision = [
+    { index = "pytorch-cu128", marker = "extra == 'cu128'" },
+    { index = "pytorch-cu124", marker = "extra == 'cu124' and extra != 'cu128'" },
+    { index = "pytorch-cpu", marker = "extra != 'cu128' and extra != 'cu124'" }
+]
 [[tool.uv.index]]
 name = "pytorch-cpu"
 url = "https://download.pytorch.org/whl/cpu"

@@ -37,10 +37,10 @@ Copy `DobotDll.dll`, `msvcp120.dll`, `msvcr120.dll`, `Qt5Core.dll`, `Qt5Network.
 uv sync
 
 # If you have an NVIDIA GPU with CUDA 12.8+ driver (faster inference):
-uv sync --index pytorch-cu128
+uv sync --extra cu128
 
 # If you have an older NVIDIA GPU stuck on CUDA 12.4:
-uv sync --index pytorch-cu124
+uv sync --extra cu124
 ```
 
 ### 6. Sanity check (no arm motion)
